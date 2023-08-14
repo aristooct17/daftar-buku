@@ -7,9 +7,8 @@ import axios from 'axios';
 import { TextInput } from "flowbite-react";
 import DateRangeFilter from "../../src/components/Filter/DateRangeFilter";
 import Link from "next/link";
-import { DetailBukuLists } from "../utils/types/detailBukuList";
 
-const DaftarBuku = ({ id } : DetailBukuLists) => {
+const DaftarBuku = () => {
   const [bukuLists, setBukuLists] = useState([]);
   const [filterBookName, setFilterBookName] = useState("");
   const [dateValue, setDateValue] = useState({
