@@ -7,14 +7,17 @@ export type DetailBukuLists = {
 };  
 
 export type DetailBukuType = {
-    name: string;
-    username: string;
-    email: string;
-    phone: string;
-    website: string;
+    id: string;
+    image: string;
+    bookTitle: string;
+    writer: string;
+    year: string;
+    authors: string;
+    publishedDate: string,
+    description: string,
+    volumeInfo: '',
 };
 
 export type DetailBukuProps = {
     id: number;
-    volumeInfo: string;
 }

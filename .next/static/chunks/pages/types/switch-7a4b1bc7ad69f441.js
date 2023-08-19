@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[515],{2665:function(n,_,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/types/switch",function(){return u(2905)}])},2905:function(){}},function(n){n.O(0,[774,888,179],function(){return n(n.s=2665)}),_N_E=n.O()}]);
