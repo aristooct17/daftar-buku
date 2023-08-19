@@ -10,7 +10,7 @@ import Head from "next/head";
 export default function DaftarBuku() {
   const title = "Daftar List Buku";
   const [view, setView] = useState<"list" | "grid">("list"); // default view is list
-  const { isLoading, error, data } = useQuery<DetailBukuLists[]>("datas", () =>
+  const { isLoading, error, data } = useQuery("datas", () =>
     axios
       .get("https://www.googleapis.com/books/v1/volumes?q=search+terms&key=AIzaSyBVTk6hrNq3WsAv0wi1mevJA-2Mqawz9FQ")
       .then((res) => res.data.items)
@@ -43,7 +43,7 @@ export default function DaftarBuku() {
                   : "grid grid-cols-2 md:grid-cols-3"
               } gap-4`}
             >
-              {data?.map((item) => (
+              {data?.map((item: any) => (
                 <Card
                   key={item.id}
                   id={item.id}

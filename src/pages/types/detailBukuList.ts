@@ -16,4 +16,5 @@ export type DetailBukuType = {
 
 export type DetailBukuProps = {
     id: number;
+    volumeInfo: string;
 }

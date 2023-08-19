@@ -9,7 +9,7 @@ import { useQuery } from "react-query";
 const UserDetail = ({ id }: DetailBukuProps) => {
   const router = useRouter();
 
-  const { isLoading, error, data } = useQuery<DetailBukuType>("user", () =>
+  const { isLoading, error, data } = useQuery("user", () =>
     axios
       .get(`https://www.googleapis.com/books/v1/volumes/${id}?q=search+terms&key=AIzaSyBVTk6hrNq3WsAv0wi1mevJA-2Mqawz9FQ`)
       .then((res) => res.data)
@@ -45,7 +45,7 @@ const UserDetail = ({ id }: DetailBukuProps) => {
                 alt="img"
               />
               <h3 className="break-words text-xl font-medium">
-                {data?.name} {data?.volumeInfo.title ? `(${data.volumeInfo.title})` : ""}
+                {data?.volumeInfo.title ? `(${data.volumeInfo.title})` : ""}
               </h3>
               <p className="break-words text-sm">{data?.volumeInfo.authors}</p>
               <p className="break-words text-sm">{data?.volumeInfo.publishedDate}</p>
