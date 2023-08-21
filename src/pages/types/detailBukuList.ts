@@ -4,8 +4,6 @@ export type DetailBukuLists = {
     bookTitle: string;
     writer: string;
     year: string;
-    startYear: number;
-    endYear: number;
 };  
 
 export type DetailBukuType = {

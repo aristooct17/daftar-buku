@@ -1,23 +1,23 @@
 import { useQuery } from "react-query";
+import moment from "moment";
 import { TextInput } from "flowbite-react";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { DetailBukuLists } from "../pages/types/detailBukuList";
-import { YearRangePicker } from 'react-year-range-picker';
+import DatePicker from "react-datepicker";
 import Switcher from "@/components/Switcher";
 import Card from "@/components/Card";
 import Spinner from "@/components/Spinner";
 import Head from "next/head";
 
-export default function DaftarBuku({ startYear, endYear }: DetailBukuLists) {
+import "react-datepicker/dist/react-datepicker.css";
+
+export default function DaftarBuku() {
   const title = "Daftar List Buku";
   const [view, setView] = useState<"list" | "grid">("grid"); // default view is list
   const [bookLists, setBookLists] = useState([]);
   const [filterBookTitle, setFilterBookTitle] = useState("");
-  const [yearRange, setYearRange] = useState({
-    startYear: startYear,
-    endYear: endYear,
-  });
+  const [startYear, setStartYear] = useState(new Date());
   const { isLoading, error } = useQuery("bookLists", () =>
     axios
       .get("https://www.googleapis.com/books/v1/volumes?q=search+terms&key=AIzaSyBVTk6hrNq3WsAv0wi1mevJA-2Mqawz9FQ")
@@ -34,25 +34,29 @@ export default function DaftarBuku({ startYear, endYear }: DetailBukuLists) {
 
   useEffect(() => {
     booksListData();
-  }, [yearRange]);
+  }, [startYear]);
 
   async function booksListData() {
+    const startYears = moment(startYear, "YYYY").format();
     try {
       const response = await axios.get("https://www.googleapis.com/books/v1/volumes?q=search+terms&key=AIzaSyBVTk6hrNq3WsAv0wi1mevJA-2Mqawz9FQ", {
         params: {
           title: filterBookTitle,
-          yearStart: yearRange?.startYear,
-          yearEnd: yearRange?.endYear,
+          yearStart: startYears,
         },
       });
       const records = response.data;
       setBookLists(records.items)
       setFilterBookTitle(records.items.volumeInfo.title)
-      setYearRange(records.items.volumeInfo.publishedDate)
+      setStartYear(records.items.volumeInfo.publishedDate)
     } catch (err) {
       console.log(err);
     }
   }
+
+  const handleValueChange = (newValue: any) => {
+    setStartYear(newValue);
+  };
 
   return (
     <div className="container px-2 md:px-0 mx-auto py-16 min-h-screen">
@@ -88,15 +92,11 @@ export default function DaftarBuku({ startYear, endYear }: DetailBukuLists) {
                 <div className="col-span-1">
                     <div className="flex justify-start">
                         <div className="relative">
-                          <YearRangePicker
-                            minYear={new Date().getFullYear() - 35}
-                            maxYear={new Date().getFullYear() + 2}
-                            onSelect={(startYear: number, endYear: number) => {
-                              setYearRange({startYear, endYear})
-                            }}
-                            startYear={yearRange?.startYear}
-                            endYear={yearRange?.endYear}
-                            style={{marginTop: '3rem', marginLeft: '2rem', padding: '4px', borderRadius: '10px', borderColor: `rgb(203 213 225)`, color: `rgb(203 213 225)`, background: 'white', fontSize: 'initial'}}
+                          <DatePicker
+                            selected={startYear} onChange={handleValueChange}
+                            showYearPicker
+                            dateFormat="yyyy"
+                            className="mt-[3rem] ml-[2rem] padding-[4px] pl-[8px] rounded-[10px] h-[40px] border-[203, 213, 225] color-[203, 213, 225] bg-white"
                           />
                         </div>
                     </div>
@@ -121,7 +121,8 @@ export default function DaftarBuku({ startYear, endYear }: DetailBukuLists) {
                     image={bookList.volumeInfo.imageLinks.thumbnail}
                     bookTitle={bookList.volumeInfo.title}
                     writer={bookList.volumeInfo.authors}
-                    year={bookList.volumeInfo.publishedDate} startYear={0} endYear={0}                  />
+                    year={bookList.volumeInfo.publishedDate}
+                  />
                 ))}
               </div>
           </>
