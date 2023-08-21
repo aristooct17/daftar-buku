@@ -9,14 +9,14 @@ import Card from "@/components/Card";
 import Spinner from "@/components/Spinner";
 import Head from "next/head";
 
-export default function DaftarBuku() {
+export default function DaftarBuku({ startYear, endYear }: DetailBukuLists) {
   const title = "Daftar List Buku";
   const [view, setView] = useState<"list" | "grid">("grid"); // default view is list
   const [bookLists, setBookLists] = useState([]);
   const [filterBookTitle, setFilterBookTitle] = useState("");
   const [yearRange, setYearRange] = useState({
-    startYear: null,
-    endYear: null,
+    startYear: startYear,
+    endYear: endYear,
   });
   const { isLoading, error } = useQuery("bookLists", () =>
     axios
@@ -53,10 +53,6 @@ export default function DaftarBuku() {
       console.log(err);
     }
   }
-
-  const selectDate = ({ startYear, endYear }: any) => {
-    setYearRange({ startYear, endYear });
-  };
 
   return (
     <div className="container px-2 md:px-0 mx-auto py-16 min-h-screen">
@@ -96,7 +92,7 @@ export default function DaftarBuku() {
                             minYear={new Date().getFullYear() - 35}
                             maxYear={new Date().getFullYear() + 2}
                             onSelect={(startYear: number, endYear: number) => {
-                              setYearRange({ startYear, endYear })
+                              setYearRange({startYear, endYear})
                             }}
                             startYear={yearRange?.startYear}
                             endYear={yearRange?.endYear}
@@ -125,8 +121,7 @@ export default function DaftarBuku() {
                     image={bookList.volumeInfo.imageLinks.thumbnail}
                     bookTitle={bookList.volumeInfo.title}
                     writer={bookList.volumeInfo.authors}
-                    year={bookList.volumeInfo.publishedDate}
-                  />
+                    year={bookList.volumeInfo.publishedDate} startYear={0} endYear={0}                  />
                 ))}
               </div>
           </>
